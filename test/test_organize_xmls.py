@@ -8,7 +8,7 @@ os.chdir(test_root)
 sys.path.insert(0, os.path.dirname(test_root))
 sys.path.insert(0, test_root)
 
-from spednfe.nfe_toolkit import NFeToolkit
+from nfetoolkit.nfetkt import NFeTkt
 
 class TestNFeToolkit(unittest.TestCase):
 
@@ -19,7 +19,7 @@ class TestNFeToolkit(unittest.TestCase):
 
         dest_dir_fd = f'{os.getcwd()}\\output'
 
-        test = NFeToolkit()
+        test = NFeTkt.XMLOrganizer()
         test.extract_xmls(zip_path, dest_dir_fd)      
 
 if __name__ == '__main__':
