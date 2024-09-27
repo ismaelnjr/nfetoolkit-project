@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: nfetoolkit
+Version: 0.0.1
+Summary: Toolkit para manipulação de notas fiscais eletrônicas
+Home-page: https://github.com/ismaelnjr/nfetoolkit-project.git
+Author: Ismael Nascimento
+Author-email: ismaelnjr@icloud.com.br
+License: MIT License
+Keywords: sped fiscal nfe receita federal
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: xsdata
+Requires-Dist: nfelib
+Requires-Dist: spedpy
+Requires-Dist: BrazilFiscalReport
+Requires-Dist: erpbrasil
+Requires-Dist: six
+Requires-Dist: tdqm
+
+# NFE Toolkit
+
+Biblioteca para manipulaÃ§Ã£o de arquivos nfe (Nota Fiscal EletrÃ´nica)
+
+## Requisitos
+
+- python
+- xsdata
+- nfelib
+- spedpy
+
+## Como instalar
+
+    $ pip install nfetoolkit
+
+## Objetivos do Projeto
+
+A ideia Ã© criar um toolkit para leitura/criaÃ§Ã£o/organizaÃ§Ã£o de xmls relacionados ao projeto da Nota Fiscal EletrÃ´nica
+

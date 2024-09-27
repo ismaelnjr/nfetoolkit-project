@@ -24,8 +24,8 @@ from xsdata.formats.dataclass.parsers import XmlParser
 from lxml import etree
 from typing import Optional, List, Any
 
-from .spednfe.arquivos import ArquivoDigital
-from .spednfe.registros import RegistroN100, RegistroN140, RegistroN141, RegistroN170, RegistroZ100
+from nfetoolkit.spednfe.arquivos import ArquivoDigital
+from nfetoolkit.spednfe.registros import RegistroN100, RegistroN140, RegistroN141, RegistroN170, RegistroZ100
 
 
 class NFeTkt(object):

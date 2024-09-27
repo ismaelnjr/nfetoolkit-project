@@ -1,0 +1,7 @@
+xsdata
+nfelib
+spedpy
+BrazilFiscalReport
+erpbrasil
+six
+tdqm
