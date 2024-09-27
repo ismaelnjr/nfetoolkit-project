@@ -1,3 +1,4 @@
 /.venv
 /exemplo.pdf
 /nfetoolkit-project.code-workspace
+/spednfe/__pycache__/*

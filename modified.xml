@@ -1,0 +1,212 @@
+<nfeProc xmlns="http://www.portalfiscal.inf.br/nfe" xmlns="http://www.w3.org/2000/09/xmldsig#" versao="4.00">
+    <NFe>
+        <infNFe Id="NFe35240523004906000180550010001354511002078970" versao="4.00">
+            <ide>
+                <cUF>35</cUF>
+                <cNF>00207897</cNF>
+                <natOp>REMESSA MERC CONSIGNACAO MERC</natOp>
+                <mod>55</mod>
+                <serie>1</serie>
+                <nNF>135451</nNF>
+                <dhEmi>2024-05-03T13:30:30-03:00</dhEmi>
+                <dhSaiEnt>2024-05-03T13:30:30-03:00</dhSaiEnt>
+                <tpNF>1</tpNF>
+                <idDest>1</idDest>
+                <cMunFG>3550308</cMunFG>
+                <tpImp>2</tpImp>
+                <tpEmis>1</tpEmis>
+                <cDV>0</cDV>
+                <tpAmb>1</tpAmb>
+                <finNFe>1</finNFe>
+                <indFinal>0</indFinal>
+                <indPres>0</indPres>
+                <procEmi>0</procEmi>
+                <verProc>OG-FTP400B4-MNGSAAS</verProc>
+            </ide>
+            <emit>
+                <CNPJ>23004906000180</CNPJ>
+                <xNome>ALFACOMEX COMERCIO IMPORT E EXPORT DE PRODUTOS EM GERAL LTDA</xNome>
+                <xFant>ALFACOMEX COMERCIO IMPORT E EXPORT DE PRODUTOS EM GERAL LTDA</xFant>
+                <enderEmit>
+                    <xLgr>AVENIDA MARCOS PENTEADO DE ULHOA RODRIGU</xLgr>
+                    <nro>491</nro>
+                    <xCpl>SALA 17</xCpl>
+                    <xBairro>TAMBORE</xBairro>
+                    <cMun>3550308</cMun>
+                    <xMun>SAO PAULO</xMun>
+                    <UF>SP</UF>
+                    <CEP>06460040</CEP>
+                    <cPais>1058</cPais>
+                    <xPais>BRASIL</xPais>
+                    <fone>55112888662</fone>
+                </enderEmit>
+                <IE>206862098117</IE>
+                <CRT>3</CRT>
+            </emit>
+            <dest>
+                <CNPJ>43283811003922</CNPJ>
+                <xNome>KALUNGA SA</xNome>
+                <enderDest>
+                    <xLgr>ESTRADA DOS ALPES</xLgr>
+                    <nro>890</nro>
+                    <xCpl>910 GALPAO JOBIM</xCpl>
+                    <xBairro>JARDIM BELVAL</xBairro>
+                    <cMun>3505708</cMun>
+                    <xMun>BARUERI</xMun>
+                    <UF>SP</UF>
+                    <CEP>06423080</CEP>
+                    <cPais>1058</cPais>
+                    <xPais>BRASIL</xPais>
+                    <fone>1133469837</fone>
+                </enderDest>
+                <indIEDest>1</indIEDest>
+                <IE>206215739115</IE>
+                <email>FABIO.ABRAVI@UOL.COM.BR</email>
+            </dest>
+            <autXML>
+                <CNPJ>05775107000125</CNPJ>
+            </autXML>
+            <autXML>
+                <CNPJ>41156866000173</CNPJ>
+            </autXML>
+            <det nItem="1">
+                <prod>
+                    <cProd>7898564046137</cProd>
+                    <cEAN>7898564046137</cEAN>
+                    <xProd>TLCH65BK CARREGADOR COM 4 USB E 1 USB-C COM PLUGUES E ADAPTADORES PARA VIAGEM COR PRETA E CINZA ESPACIAL</xProd>
+                    <NCM>85044010</NCM>
+                    <CEST>2103700</CEST>
+                    <CFOP>5917</CFOP>
+                    <uCom>UN</uCom>
+                    <qCom>500.0000</qCom>
+                    <vUnCom>144.4200</vUnCom>
+                    <vProd>72210.00</vProd>
+                    <cEANTrib>7898564046137</cEANTrib>
+                    <uTrib>UN</uTrib>
+                    <qTrib>500.0000</qTrib>
+                    <vUnTrib>144.4200</vUnTrib>
+                    <indTot>1</indTot>
+                    <xPed>312525</xPed>
+                </prod>
+                <imposto>
+                    <vTotTrib>19937.18</vTotTrib>
+                    <ICMS>
+                        <ICMS70>
+                            <orig>2</orig>
+                            <CST>70</CST>
+                            <modBC>3</modBC>
+                            <pRedBC>51.11</pRedBC>
+                            <vBC>35303.47</vBC>
+                            <pICMS>18.00</pICMS>
+                            <vICMS>6354.62</vICMS>
+                            <modBCST>4</modBCST>
+                            <pMVAST>70.00</pMVAST>
+                            <vBCST>63016.69</vBCST>
+                            <pICMSST>18.00</pICMSST>
+                            <vICMSST>4988.38</vICMSST>
+                        </ICMS70>
+                    </ICMS>
+                    <IPI>
+                        <cEnq>999</cEnq>
+                        <IPITrib>
+                            <CST>50</CST>
+                            <vBC>72210.00</vBC>
+                            <pIPI>5.00</pIPI>
+                            <vIPI>3610.50</vIPI>
+                        </IPITrib>
+                    </IPI>
+                    <PIS>
+                        <PISAliq>
+                            <CST>01</CST>
+                            <vBC>65855.38</vBC>
+                            <pPIS>1.65</pPIS>
+                            <vPIS>1086.61</vPIS>
+                        </PISAliq>
+                    </PIS>
+                    <COFINS>
+                        <COFINSAliq>
+                            <CST>01</CST>
+                            <vBC>65855.38</vBC>
+                            <pCOFINS>7.60</pCOFINS>
+                            <vCOFINS>5005.01</vCOFINS>
+                        </COFINSAliq>
+                    </COFINS>
+                </imposto>
+            </det>
+            <total>
+                <ICMSTot>
+                    <vBC>35303.47</vBC>
+                    <vICMS>6354.62</vICMS>
+                    <vICMSDeson>0.00</vICMSDeson>
+                    <vFCP>0.00</vFCP>
+                    <vBCST>63016.69</vBCST>
+                    <vST>4988.38</vST>
+                    <vFCPST>0.00</vFCPST>
+                    <vFCPSTRet>0.00</vFCPSTRet>
+                    <vProd>72210.00</vProd>
+                    <vFrete>0.00</vFrete>
+                    <vSeg>0.00</vSeg>
+                    <vDesc>0.00</vDesc>
+                    <vII>0.00</vII>
+                    <vIPI>3610.50</vIPI>
+                    <vIPIDevol>0.00</vIPIDevol>
+                    <vPIS>1086.61</vPIS>
+                    <vCOFINS>5005.01</vCOFINS>
+                    <vOutro>0.00</vOutro>
+                    <vNF>80808.88</vNF>
+                    <vTotTrib>19937.18</vTotTrib>
+                </ICMSTot>
+            </total>
+            <transp>
+                <modFrete>3</modFrete>
+                <vol>
+                    <qVol>10</qVol>
+                    <esp>VOLUME</esp>
+                    <pesoL>76.450</pesoL>
+                    <pesoB>89.950</pesoB>
+                </vol>
+            </transp>
+            <pag>
+                <detPag>
+                    <tPag>90</tPag>
+                    <vPag>0.00</vPag>
+                </detPag>
+            </pag>
+            <infAdic>
+                <infCpl>Pedido: 207897-0 Seu Pedido:312525/ Representante:FABIO VIEIRA/ SERA EMITIDA NOTA FISCAL PARA EFEITO DE FATURAMENTO NOS TERMOS DO ART 467 DO RICMS-SP 2000/ O PRODUTO SAIRA DIRETAMENTE DO ARMAZEM PELOG TRANSPORTES LTDA LOCALIZADO NA AV MARCOS PENTEADO ULHOA RODRIGUES 491 BARUERI SP CNPJ 10962644000114 INSC ESTADUAL 492562574111/ NCM 85044010 SUBST TRIB ART 313-Z19 DO RICMS-SP 2000 BASE DE CALCULO REDUZIDA DOS TERMOS DO ARTIGO 12 DO ANEXO II DO RICMS SP C C O ANEXO I DO CONVENIO ICMS 52 91./</infCpl>
+            </infAdic>
+        </infNFe>
+        <Signature>
+            <SignedInfo>
+                <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+                <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+                <Reference URI="#NFe35240523004906000180550010001354511002078970">
+                    <Transforms>
+                        <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+                        <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+                    </Transforms>
+                    <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+                    <DigestValue>sqy4QWLH5OwReiJbOjRtHRDbJ0A=</DigestValue>
+                </Reference>
+            </SignedInfo>
+            <SignatureValue>U/CqrctNEJwW2g3uM6CfK+mgilhBoipqBg8tqddcdQfjrQXM79QxfmqyJkr2kUzd1b5y7KDLcnJy4jqQHbeoks3LILEDzp8x7PA8BgfS+u8G0Dwit1232rNgfF9F7o+fJu8xjeh5sZgwe6bEibhfVR7nC4mtbOrcYpBzSrX+oDShOd6V8pgPgFZmtK+HkGnrwV9oBA7FZw9+Til4kdjRvUVlH+V04/XeepkdGHDdcCvmNVAalA1wGN0e4LfKIKmX9FayuVKFgTE43PKPIDN3By2lSoEgEEYUWkCFKcW3Qq0sD3PAkIIIuvvmvzQ+PMctdJCmGnMJgb3+66OegV2Mww==</SignatureValue>
+            <KeyInfo>
+                <X509Data>
+                    <X509Certificate>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</X509Certificate>
+                </X509Data>
+            </KeyInfo>
+        </Signature>
+    </NFe>
+    <protNFe versao="4.00">
+        <infProt Id="Id135240926089838">
+            <tpAmb>1</tpAmb>
+            <verAplic>SP_NFE_PL009_V4</verAplic>
+            <chNFe>35240523004906000180550010001354511002078970</chNFe>
+            <dhRecbto>2024-05-03T13:30:32-03:00</dhRecbto>
+            <nProt>135240926089838</nProt>
+            <digVal>sqy4QWLH5OwReiJbOjRtHRDbJ0A=</digVal>
+            <cStat>100</cStat>
+            <xMotivo>Autorizado o uso da NF-e</xMotivo>
+        </infProt>
+    </protNFe>
+</nfeProc>

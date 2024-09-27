@@ -9,7 +9,7 @@
       "tag": ".ns:imposto/ns:ICMS//ns:orig",
       "condition": {
         ".ns:prod/ns:NCM": "85044010",
-        ".ns:imposto/ns:ICMS//ns:orig": "2"
+        ".ns:imposto/ns:ICMS//ns:orig": "1"
       },
       "new_value": "2"
     }
