@@ -10,13 +10,13 @@ sys.path.insert(0, test_root)
 
 from nfetoolkit.nfetkt import NFeTkt
 
-class TestNFeToolkit(unittest.TestCase):
+class TestNFeRep(unittest.TestCase):
            
-    def test_repositorio(self):
+    def test_rep(self):
         
         nfeToolkit = NFeTkt.NFeRepository()
-        nfeToolkit.add_all('C:\\temp\\dest\\nfe')
-        nfeToolkit.save_repository('nfe_data.txt')
+        nfeToolkit.add_all_nfe('C:\\temp\\dest\\nfe')
+        nfeToolkit.save('nfe_data.txt')
 
 if __name__ == '__main__':
     unittest.main()

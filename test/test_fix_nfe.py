@@ -10,7 +10,7 @@ sys.path.insert(0, test_root)
 
 from nfetoolkit.nfetkt import NFeTkt
 
-class TestReadNFe(unittest.TestCase):
+class TestFixNFe(unittest.TestCase):
            
     def test_fix_nfe(self):
         

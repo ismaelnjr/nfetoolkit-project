@@ -43,11 +43,10 @@ class NFeTkt(object):
                 self._rep = ArquivoDigital()
 
         @property
-        def repositorio_nfe(self):
-            return self._rep
-      
+        def content(self):
+            return self._rep      
 
-        def add_all(self, source_dir: str):
+        def add_all_nfe(self, source_dir: str):
             
             xml_list = self.__list_xml(source_dir)
             for xml_file in tqdm.tqdm(xml_list, total=len(xml_list), desc="processando xmls"):            
@@ -55,15 +54,15 @@ class NFeTkt(object):
                 
                 if xml_type == 'nfe_type':
                     obj = NFeTkt.XMLHandler.nfe_from_path(xml_file)
-                    self._store_nfe(obj)
+                    self.store_nfe(obj)
                 elif xml_type == 'canc_type':
                     obj = NFeTkt.XMLHandler.evento_canc_from_path(xml_file)
-                    self._store_evt(obj)
+                    self.store_evt(obj)
                 elif xml_type == 'cce_type':      
                     obj = NFeTkt.XMLHandler.evento_cce_from_path(xml_file)
-                    self._store_evt(obj)         
+                    self.store_evt(obj)         
                     
-        def _store_evt(self, evt: Any):
+        def store_evt(self, evt: Any):
             
             blocoZ = self._rep.blocoZ
             z100 = RegistroZ100()
@@ -77,7 +76,7 @@ class NFeTkt(object):
             z100.DESC_EVENTO = evt.retEvento.infEvento.xEvento
             blocoZ.add(z100)            
         
-        def _store_nfe(self, nfeProc: NfeProc):  # sourcery skip: extract-method
+        def store_nfe(self, nfeProc: NfeProc):  # sourcery skip: extract-method
 
             blocoN = self._rep.blocoN
             # processa cabeçalho da nota fiscal
@@ -197,7 +196,7 @@ class NFeTkt(object):
                     return [IPI.IPINT.CST.value, 0.0]
             return [None, 0.0]
         
-        def save_repository(self, filename: str):
+        def save(self, filename: str):
             with open(filename, 'w', encoding='utf-8') as file:
                 self._rep.write_to(file)
     
@@ -244,24 +243,24 @@ class NFeTkt(object):
     
     class XMLHandler:
         
-        _parser = XmlParser()  
+        _parser = XmlParser()
         
         @staticmethod
-        def nfe_from_path(path) -> NfeProc:
+        def nfe_from_path( path) -> NfeProc:
             return NFeTkt.XMLHandler._parser.parse(path, NfeProc)
         @staticmethod
         def evento_canc_from_path(path) -> CancNFe:
-            return NFeTkt.XMLHandler._parser._parser.parse(path, CancNFe)
+            return NFeTkt.XMLHandler._parser.parse(path, CancNFe)
         @staticmethod
         def evento_cce_from_path(path) -> CCe:
-            return NFeTkt.XMLHandler._parser._parser.parse(path, CCe)
+            return NFeTkt.XMLHandler._parser.parse(path, CCe)
         @staticmethod
         def nfe_to_xml(nfeproc: NfeProc) -> str:
             return NFeTkt.XMLHandler.to_xml(nfeproc)
         @staticmethod
         def evento_canc_to_xml(nfecanc: CancNFe) -> str:
             return  NFeTkt.XMLHandler.to_xml(nfecanc)
-        @staticmethod    
+        @staticmethod   
         def evento_cce_to_xml(cce: CCe) -> str:
             return NFeTkt.XMLHandler.to_xml(cce)
         @staticmethod
@@ -395,6 +394,7 @@ class NFeTkt(object):
             """Serialize binding as xml, validate it and return possible errors."""
             xml = NFeTkt.XMLHandler.to_xml(obj_xml)
             return NFeTkt.XMLHandler.schema_validation(obj_xml, xml, schema_path) 
+        
         @staticmethod
         def nfe_to_pdf(nfeProc: NfeProc, pdf_filename: str):
             pdf_bytes = nfeProc.to_pdf()
@@ -403,8 +403,7 @@ class NFeTkt(object):
             
     class XMLOrganizer:
 
-        @staticmethod
-        def organize_xmls(source_dir_fd: str, dest_dir_fd: str, folders_map=None):
+        def organize_xmls(self, source_dir_fd: str, dest_dir_fd: str, folders_map=None):
             """oraniza os arquivos xml contidos em uma pasta e os move para subpastas de 
             um diretório fornecido pelo usuário (pastas padrão: nfe, canc, cce e inut)""" 
             NFeTkt.XMLOrganizer.create_dest_folders(dest_dir_fd, folders_map)
@@ -413,10 +412,10 @@ class NFeTkt(object):
                 for file in files:
                     file_path = Path(root) / file
                     if file.endswith('.zip'):
-                        NFeTkt.XMLOrganizer.extract_xmls(file_path, dest_dir_fd)
+                        self.extract_xmls(file_path, dest_dir_fd)
                     elif file.endswith('.xml'):
                         try:
-                            xml_type = NFeTkt.XMLOrganizer.xml_type(file_path)
+                            xml_type = self.xml_type(file_path)
                             if xml_type == 'unknown_type':
                                 print(f"Arquivo {file} não é um arquivo xml conhecido")
                             else:
@@ -424,8 +423,7 @@ class NFeTkt(object):
                         except Exception as e:
                             print(f"Erro ao processar {file}: {e}")
 
-        @staticmethod
-        def extract_xmls(zipFile: str, dest_dir_fd: str):
+        def extract_xmls(self, zipFile: str, dest_dir_fd: str):
             """extrai os arquivos xml de um arquivo zip e os organiza em um diretório fornecido pelo usuário"""
             
             temp_folder = Path.cwd() / ''.join(random.choices(string.ascii_uppercase + string.digits, k=16))
@@ -451,8 +449,7 @@ class NFeTkt(object):
 
             return 'unknown_type'   
                 
-        @staticmethod
-        def create_dest_folders(path: str, dest_fds_map: dict = None):
+        def create_dest_folders(self, path: str, dest_fds_map: dict = None):
             if dest_fds_map is None:
                 dest_fds_map = {
                     'nfe_type': 'nfe',
