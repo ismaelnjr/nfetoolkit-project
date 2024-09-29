@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: nfetoolkit
-Version: 0.0.1
+Version: 0.0.2
 Summary: Toolkit para manipulação de notas fiscais eletrônicas
 Home-page: https://github.com/ismaelnjr/nfetoolkit-project.git
 Author: Ismael Nascimento
@@ -15,8 +15,6 @@ License-File: LICENSE
 Requires-Dist: xsdata
 Requires-Dist: nfelib
 Requires-Dist: spedpy
-Requires-Dist: BrazilFiscalReport
-Requires-Dist: erpbrasil
 Requires-Dist: six
 Requires-Dist: tdqm
 

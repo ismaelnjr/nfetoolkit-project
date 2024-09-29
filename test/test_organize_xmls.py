@@ -20,7 +20,7 @@ class TestNFeToolkit(unittest.TestCase):
         dest_dir_fd = f'{os.getcwd()}\\output'
 
         test = NFeTkt.XMLOrganizer()
-        test.extract_xmls(zip_path, dest_dir_fd)      
+        test.extract_xmls(zip_path, dest_dir_fd, organize=True)      
 
 if __name__ == '__main__':
     unittest.main()

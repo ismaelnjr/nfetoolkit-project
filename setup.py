@@ -23,7 +23,7 @@ setup(name='nfetoolkit',
     url='https://github.com/ismaelnjr/nfetoolkit-project.git',
     packages=find_packages(),
     include_package_data=True,
-    install_requires=['xsdata', 'nfelib', 'spedpy', 'BrazilFiscalReport', 'erpbrasil', 'six', 'tdqm'],
+    install_requires=['xsdata', 'nfelib', 'spedpy', 'six', 'tdqm'],
     classifiers=
         ["Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
