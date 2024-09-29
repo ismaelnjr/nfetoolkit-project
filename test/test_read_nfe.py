@@ -8,17 +8,13 @@ os.chdir(test_root)
 sys.path.insert(0, os.path.dirname(test_root))
 sys.path.insert(0, test_root)
 
-from nfetoolkit.nfetkt import NFeTkt 
-from nfetoolkit.nfetkt import CCe
-from nfetoolkit.nfetkt import CancNFe
-from nfetoolkit.nfetkt import NfeProc
-
+from nfetoolkit import nfetk 
 
 class TestReadNFe(unittest.TestCase):
            
     def test_read_nfe(self):
         
-        nfeToolkit = NFeTkt.XMLHandler()
+        nfeToolkit = nfetk.XMLHandler()
         nfeProc = nfeToolkit.nfe_from_path("nfe.xml")
         print(f"NFe Id: {nfeProc.NFe.infNFe.Id}")
 

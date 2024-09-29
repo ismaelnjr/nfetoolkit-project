@@ -24,8 +24,8 @@ from xsdata.formats.dataclass.parsers import XmlParser
 from lxml import etree
 from typing import Optional, List, Any
 
-from nfetoolkit.spednfe.arquivos import ArquivoDigital
-from nfetoolkit.spednfe.registros import RegistroN100, RegistroN140, RegistroN141, RegistroN170, RegistroZ100
+from sped.nfe.arquivos import ArquivoDigital
+from sped.nfe.registros import RegistroN100, RegistroN140, RegistroN141, RegistroN170, RegistroZ100
 
 
 class NFeTkt(object):
@@ -46,10 +46,10 @@ class NFeTkt(object):
         def content(self):
             return self._rep      
 
-        def add_all_nfe(self, source_dir: str):
+        def add_all_nfe(self, source_dir: str, verbose=False):
             
             xml_list = self.__list_xml(source_dir)
-            for xml_file in tqdm.tqdm(xml_list, total=len(xml_list), desc="processando xmls"):            
+            for xml_file in tqdm.tqdm(xml_list, total=len(xml_list), desc="processando xmls", disable=not verbose):            
                 xml_type = NFeTkt.XMLOrganizer.xml_type(xml_file)
                 
                 if xml_type == 'nfe_type':

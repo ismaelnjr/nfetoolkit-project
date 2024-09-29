@@ -8,13 +8,13 @@ os.chdir(test_root)
 sys.path.insert(0, os.path.dirname(test_root))
 sys.path.insert(0, test_root)
 
-from nfetoolkit.nfetkt import NFeTkt 
+from nfetoolkit import nfetk
 
 class TestReadNFe(unittest.TestCase):
            
     def test_danfe_nfe(self):
         
-        nfetoolkit = NFeTkt.XMLHandler()             
+        nfetoolkit = nfetk.XMLHandler()             
         nfeProc = nfetoolkit.nfe_from_path('nfe.xml')
         nfetoolkit.nfe_to_pdf(nfeProc, 'nfe.pdf')
 

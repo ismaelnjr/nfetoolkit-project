@@ -8,14 +8,14 @@ os.chdir(test_root)
 sys.path.insert(0, os.path.dirname(test_root))
 sys.path.insert(0, test_root)
 
-from nfetoolkit.nfetkt import NFeTkt
+from nfetoolkit import nfetk
 
 class TestNFeRep(unittest.TestCase):
            
     def test_rep(self):
         
-        nfeToolkit = NFeTkt.NFeRepository()
-        nfeToolkit.add_all_nfe('C:\\temp\\dest\\nfe')
+        nfeToolkit = nfetk.NFeRepository()
+        nfeToolkit.add_all_nfe('C:\\temp\\dest\\nfe', verbose=True)
         nfeToolkit.save('nfe_data.txt')
 
 if __name__ == '__main__':

@@ -8,7 +8,7 @@ os.chdir(test_root)
 sys.path.insert(0, os.path.dirname(test_root))
 sys.path.insert(0, test_root)
 
-from nfetoolkit.nfetkt import NFeTkt
+from nfetoolkit import nfetk
 
 class TestFixNFe(unittest.TestCase):
            
@@ -41,7 +41,7 @@ class TestFixNFe(unittest.TestCase):
         xml_content = file.read()
 
       # Instancia o corretor e aplica as correções
-      fix = NFeTkt.NFeTagFix(xml_content, config_file)
+      fix = nfetk.NFeTagFix(xml_content, config_file)
       fix.apply()
 
       # Obtém o XML modificado
