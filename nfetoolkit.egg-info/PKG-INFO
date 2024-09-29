@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: nfetoolkit
-Version: 0.0.2
+Version: 0.0.3
 Summary: Toolkit para manipulação de notas fiscais eletrônicas
 Home-page: https://github.com/ismaelnjr/nfetoolkit-project.git
 Author: Ismael Nascimento
@@ -25,7 +25,6 @@ Biblioteca para manipulaÃ§Ã£o de arquivos nfe (Nota Fiscal EletrÃ´nica)
 ## Requisitos
 
 - python
-- xsdata
 - nfelib
 - spedpy
 
@@ -37,3 +36,24 @@ Biblioteca para manipulaÃ§Ã£o de arquivos nfe (Nota Fiscal EletrÃ´nica)
 
 A ideia Ã© criar um toolkit para leitura/criaÃ§Ã£o/organizaÃ§Ã£o de xmls relacionados ao projeto da Nota Fiscal EletrÃ´nica
 
+Casos de uso:
+
+    1) Ler uma nfe a partir do xml e gerar o pdf correspondente:
+
+    nfetoolkit = NFeTkt.XMLHandler()             
+    nfeProc = nfetoolkit.nfe_from_path('nfe.xml')
+    nfetoolkit.nfe_to_pdf(nfeProc, 'nfe.pdf')
+
+    2) Extrair os xmls contidos em um arquivo Zip na pasta do diretÃ³rio corrente e organizar em subpastas padrÃ£o: nfe, canc, inut e cce
+
+    zip_path = 'notas.zip'
+    dest_dir_fd = os.getcwd()
+
+    test = NFeTkt.XMLOrganizer()
+    test.extract_xmls(zip_path, dest_dir_fd)   
+
+    3) Gravar conjunto de dados de notas fiscais em um Ãºnico arquivo texto, separado por pipes (ArquivoDigital) 
+
+    nfeToolkit = NFeTkt.NFeRepository()
+    nfeToolkit.add_all_nfe('C:\\temp\\dest\\nfe')
+    nfeToolkit.save('nfe_data.txt')
