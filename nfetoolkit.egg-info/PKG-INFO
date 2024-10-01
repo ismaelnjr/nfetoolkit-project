@@ -1,15 +1,16 @@
 Metadata-Version: 2.1
 Name: nfetoolkit
-Version: 0.0.9
+Version: 0.1.0
 Summary: Toolkit para manipulação de notas fiscais eletrônicas
 Home-page: https://github.com/ismaelnjr/nfetoolkit-project.git
 Author: Ismael Nascimento
 Author-email: ismaelnjr@icloud.com.br
-License: MIT License
+License: MIT
 Keywords: sped fiscal nfe receita federal
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
 Description-Content-Type: text/markdown
 License-File: LICENSE
 

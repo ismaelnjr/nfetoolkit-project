@@ -9,7 +9,7 @@ from setuptools import find_packages
 from nfetoolkit import __version__
     
 def parse_requirements(filename):
-    with open(filename) as f:
+    with open(filename, encoding='utf-16') as f:
         return f.read().splitlines()
 
 setup(name='nfetoolkit',
