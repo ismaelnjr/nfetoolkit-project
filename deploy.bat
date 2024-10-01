@@ -9,7 +9,7 @@ rmdir /s /q *.egg-info
 
 REM 2. Gerar novo pacote
 echo Gerando pacote...
-python setup.py sdist
+python setup.py sdist bdist_wheel
 
 REM 3. Fazer upload para o PyPI
 echo Fazendo upload para o PyPI...
