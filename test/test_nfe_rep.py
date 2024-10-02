@@ -15,8 +15,9 @@ class TestNFeRep(unittest.TestCase):
     def test_rep(self):
         
         nfeToolkit = nfetk.NFeRepository()
-        nfeToolkit.add_all_nfe('C:\\temp\\dest\\nfe', verbose=True)
+        nfeToolkit.store_all('.', verbose=True)
         nfeToolkit.save('nfe_data.txt')
-
+        self.assertIsNotNone(nfeToolkit.content)
+        
 if __name__ == '__main__':
     unittest.main()

@@ -17,13 +17,16 @@ class TestReadNFe(unittest.TestCase):
         nfeToolkit = nfetk.XMLHandler()
         nfeProc = nfeToolkit.nfe_from_path("nfe.xml")
         print(f"NFe Id: {nfeProc.NFe.infNFe.Id}")
-
+        self.assertIsNotNone(nfeProc)
+        
         nfecanc = nfeToolkit.evento_canc_from_path("canc.xml")
         print(f"Motivo cancelamento: {nfecanc.evento.infEvento.detEvento.xJust}")
-
+        self.assertIsNotNone(nfecanc)
+        
         cce = nfeToolkit.evento_cce_from_path("cce.xml")
         print(f"Correção CCe: {cce.evento.infEvento.detEvento.xCorrecao}")
-
+        self.assertIsNotNone(cce)
+        
 if __name__ == '__main__':
     unittest.main()
 

@@ -14,13 +14,10 @@ class TestNFeToolkit(unittest.TestCase):
 
     def test_organize_xmls(self):
 
-        # Caminho para o arquivo ZIP contendo os XMLs
-        zip_path = 'notas.zip'
-
-        dest_dir_fd = f'{os.getcwd()}\\output'
-
         test = nfetk.XMLOrganizer()
-        test.extract_xmls(zip_path, dest_dir_fd)      
+        xml_list = test.find_all(os.getcwd())
+        
+        self.assertEqual(xml_list[0].name, 'canc.xml')
 
 if __name__ == '__main__':
     unittest.main()

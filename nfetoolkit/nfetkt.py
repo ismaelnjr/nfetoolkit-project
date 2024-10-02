@@ -12,7 +12,7 @@ import inspect
 import tqdm
 import json
 
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 
 from xsdata.formats.dataclass.serializers import XmlSerializer
@@ -29,8 +29,7 @@ from sped.nfe.registros import RegistroN100, RegistroN140, RegistroN141, Registr
 
 
 class NFeTkt(object):
-    
-    
+        
     class NFeRepository:
         
         _rep: ArquivoDigital    
@@ -46,7 +45,7 @@ class NFeTkt(object):
         def content(self):
             return self._rep      
 
-        def add_all_nfe(self, source_dir: str, verbose=False):
+        def store_all(self, source_dir: str, verbose=False):
             
             xml_list = self.__list_xml(source_dir)
             for xml_file in tqdm.tqdm(xml_list, total=len(xml_list), desc="processando xmls", disable=not verbose):            
@@ -69,7 +68,7 @@ class NFeTkt(object):
             z100.CNPJ = self.__format_CNPJ(evt.retEvento.infEvento.CNPJDest)
             z100.CPF = self.__format_CPF(evt.retEvento.infEvento.CPFDest)
             z100.CHAVE_NFE = evt.retEvento.infEvento.chNFe
-            z100.DATA_EVENTO = evt.retEvento.infEvento.dhRegEvento
+            z100.DATA_EVENTO = evt.retEvento.infEvento.dhRegEvento[8:10] + evt.retEvento.infEvento.dhRegEvento[5:7] + evt.retEvento.infEvento.dhRegEvento[:4]
             z100.TIPO_EVENTO = evt.retEvento.infEvento.tpEvento
             z100.MOTIVO = evt.retEvento.infEvento.xMotivo
             z100.PROTOCOLO = evt.retEvento.infEvento.nProt
@@ -346,12 +345,12 @@ class NFeTkt(object):
             xml_etree = etree.fromstring(xml.encode("utf-8"))
             return Assinatura(certificate).assina_xml2(xml_etree, doc_id)
         @staticmethod
-        def schema_validation(obj_xml: Any, xml: str, schema_path: Optional[str] = None) -> List:
+        def _schema_validation(obj_xml: Any, xml: str, schema_path: Optional[str] = None) -> List:
             """Validate xml against xsd schema at given path."""
             validation_messages = []
             doc_etree = etree.fromstring(xml.encode("utf-8"))
             if schema_path is None:
-                schema_path = NFeTkt.XMLHandler.get_schema_path(obj_xml)
+                schema_path = NFeTkt.XMLHandler._get_schema_path(obj_xml)
             xmlschema_doc = etree.parse(schema_path)
             parser = etree.XMLSchema(xmlschema_doc)
 
@@ -360,7 +359,7 @@ class NFeTkt(object):
             return validation_messages
 
         @classmethod
-        def get_schema_path(cls, obj_xml: Any) -> str:
+        def _get_schema_path(cls, obj_xml: Any) -> str:
 
             package = inspect.getmodule(obj_xml).__name__
             if package[:10] == "nfelib.nfe":
@@ -393,7 +392,7 @@ class NFeTkt(object):
         def validate_xml(obj_xml: Any, schema_path: Optional[str] = None) -> List:
             """Serialize binding as xml, validate it and return possible errors."""
             xml = NFeTkt.XMLHandler.to_xml(obj_xml)
-            return NFeTkt.XMLHandler.schema_validation(obj_xml, xml, schema_path) 
+            return NFeTkt.XMLHandler._schema_validation(obj_xml, xml, schema_path) 
         
         @staticmethod
         def nfe_to_pdf(nfeProc: NfeProc, pdf_filename: str):
@@ -429,6 +428,32 @@ class NFeTkt(object):
                                 file_path.rename(Path(dest_dir_fd) / folders_map[xml_type] / file)
                         except Exception as e:
                             print(f"Erro ao processar {file}: {e}")
+                            
+        @staticmethod
+        def find_all(from_path, xml_types: list = None):
+            """Finds and returns a list of NFE XML files from a specified directory.
+
+            This static method traverses the directory tree starting from `from_path`, 
+            searching for files with an '.xml' extension. It identifies files of types 
+            'nfe', 'canc', 'cce', and 'inut', collecting their paths in a list which 
+            is returned at the end.
+
+            Args:
+                from_path (str): The root directory path to start the search from.
+                xml_types (list, optional): A list of XML types to filter the results. 
+                    Defaults to ['nfe_type', 'canc_type', 'cce_type', 'inut_type'].
+
+            Returns:
+                list: A list of paths to the NFE XML files found in the directory.
+            """
+
+            nfe_list = []
+            xml_types = ['nfe_type', 'canc_type', 'cce_type', 'inut_type']
+            for file_path in Path(from_path).rglob('*.xml'):
+                xml_type = NFeTkt.XMLOrganizer.xml_type(file_path)
+                if xml_type in xml_types:
+                    nfe_list.append(file_path) 
+            return nfe_list
 
         def extract_xmls(self, zipFile: str, dest_dir_fd: str):
             """extrai os arquivos xml de um arquivo zip e os organiza em um diretório fornecido pelo usuário"""
@@ -465,19 +490,18 @@ class NFeTkt(object):
                 if not os.path.exists(f"{path}\\{dest_fds_map[key]}"):
                     os.makedirs(f"{path}\\{dest_fds_map[key]}")
     
-    class NFeTagFix:
-        
-        def __init__(self, xml_content: str, config_file: str):
+    class NFeFix:
+
+        def __init__(self, config_file: str):
             # Inicializa com o conteúdo XML e o caminho para o arquivo de configuração
-            self.tree = ET.ElementTree(ET.fromstring(xml_content))
-            self.root = self.tree.getroot()
-            
             # Carrega o arquivo de configuração JSON
             with open(config_file, 'r') as f:
                 self.config = json.load(f)
-        
-        def apply(self):
+
+        def apply(self, xml_content):
             
+            ET.register_namespace('', 'http://www.portalfiscal.inf.br/nfe')
+            self.root = ET.ElementTree(ET.fromstring(xml_content)).getroot()
             # Percorre as regras no arquivo de configuração
             for rule in self.config.get("rules", []):
                 namespace = rule.get("namespace", {})
@@ -485,24 +509,20 @@ class NFeTkt(object):
                 tag = rule.get("tag")
                 condition = rule.get("condition", {})
                 new_value = rule.get("new_value")
-                
+
                 # Aplica a correção com base na condição
-                self.apply_rule(path, namespace, tag, condition, new_value)
-        
-        def apply_rule(self, path, namespace, tag, condition: dict, new_value):
-            change_tag = True
+                self.__apply_rule(path, namespace, tag, condition, new_value)                
+            
+            return ET.tostring(self.root, encoding='unicode', xml_declaration=False)
+
+        def __apply_rule(self, path, namespace, tag, condition: dict, new_value):
             for r_elem in self.root.findall(path, namespace):
+                change_tag = all(
+                    (elem_condition := r_elem.find(condition_key, namespace)) is not None and
+                    elem_condition.text == condition.get(condition_key)
+                    for condition_key in condition
+                )
 
-                for condition_key in condition:
-                    if (elem_condition := r_elem.find(condition_key, namespace)) is not None:
-                        elem_condition_value = elem_condition.text
-                        change_tag = (elem_condition_value == condition.get(condition_key)) and change_tag
-                    else:
-                        change_tag = False
-
-                if (elem_target := r_elem.find(tag, namespace)) is not None:
-                    if change_tag:
-                        elem_target.text = new_value
-        
-        def get_xml_content(self):
-            return ET.tostring(self.root, encoding='unicode')
+                if change_tag and (elem_target := r_elem.find(tag, namespace)) is not None:
+                    elem_target.text = new_value
+                    

@@ -41,11 +41,11 @@ class TestFixNFe(unittest.TestCase):
         xml_content = file.read()
 
       # Instancia o corretor e aplica as correções
-      fix = nfetk.NFeTagFix(xml_content, config_file)
-      fix.apply()
+      fix = nfetk.NFeFix(config_file)
+      modified_xml = fix.apply(xml_content)
 
       # Obtém o XML modificado
-      modified_xml = fix.get_xml_content()
+
       print(modified_xml)
       with open('modified.xml', 'w') as f:
           f.write(modified_xml)

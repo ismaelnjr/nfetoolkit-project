@@ -22,7 +22,7 @@ setup(name='nfetoolkit',
     keywords='sped fiscal nfe receita federal',
     description=u'Toolkit para manipulação de notas fiscais eletrônicas',
     url='https://github.com/ismaelnjr/nfetoolkit-project.git',
-    packages=find_packages(),
+    packages=find_packages(exclude=['test']),
     include_package_data=True,
     install_requires=parse_requirements('requirements.txt'),
     classifiers=[
