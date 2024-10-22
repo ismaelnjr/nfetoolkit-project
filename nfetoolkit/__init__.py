@@ -1,4 +1,4 @@
-__version__ = '0.2.1'
+__version__ = '0.2.3'
 
 from .nfe_fix import NFeFix
 from .nfe_handler import NFeHandler
