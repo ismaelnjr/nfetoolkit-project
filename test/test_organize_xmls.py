@@ -19,8 +19,7 @@ class TestNFeToolkit(unittest.TestCase):
 
         dest_dir_fd = f'{os.getcwd()}\\output'
 
-        nfe_organizer = NFeOrganizer()
-        nfe_organizer.extract_xmls(zip_path, dest_dir_fd)      
+        NFeOrganizer.extract_xmls(zip_path, dest_dir_fd)      
 
 if __name__ == '__main__':
     unittest.main()

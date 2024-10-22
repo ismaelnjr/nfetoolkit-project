@@ -9,7 +9,8 @@ from .nfe_handler import NFeHandler
 
 class NFeOrganizer:
 
-    def organize_xmls(self, source_dir_fd: str, dest_dir_fd: str, folders_map=None):
+    @staticmethod
+    def organize_xmls(source_dir_fd: str, dest_dir_fd: str, folders_map=None):
         """oraniza os arquivos xml contidos em uma pasta e os move para subpastas de 
         um diretório fornecido pelo usuário (pastas padrão: nfe, canc, cce e inut)""" 
         if folders_map is None:
@@ -25,7 +26,7 @@ class NFeOrganizer:
             for file in files:
                 file_path = Path(root) / file
                 if file.endswith('.zip'):
-                    self.extract_xmls(file_path, dest_dir_fd)
+                    NFeOrganizer.extract_xmls(file_path, dest_dir_fd)
                 elif file.endswith('.xml'):
                     try:
                         xml_type = NFeHandler.xml_type(file_path)
@@ -62,14 +63,15 @@ class NFeOrganizer:
                 nfe_list.append(file_path) 
         return nfe_list
 
-    def extract_xmls(self, zipFile: str, dest_dir_fd: str):
+    @staticmethod
+    def extract_xmls(zipFile: str, dest_dir_fd: str):
         """extrai os arquivos xml de um arquivo zip e os organiza em um diretório fornecido pelo usuário"""
         
         temp_folder = Path.cwd() / ''.join(random.choices(string.ascii_uppercase + string.digits, k=16))
         with zipfile.ZipFile(zipFile, 'r') as zip_ref:
             zip_ref.extractall(temp_folder)
 
-        self.organize_xmls(source_dir_fd=temp_folder, dest_dir_fd=dest_dir_fd)
+        NFeOrganizer.organize_xmls(source_dir_fd=temp_folder, dest_dir_fd=dest_dir_fd)
         shutil.rmtree(temp_folder)
 
     

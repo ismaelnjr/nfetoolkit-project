@@ -14,17 +14,20 @@ class TestNFeRep(unittest.TestCase):
            
     def test_rep(self):
         
+        nfe_rep = NFeRepository()
+                
         xml1 = NFeHandler.nfe_from_path('nfe.xml')
         evt1 = NFeHandler.evento_canc_from_path('canc.xml')  
-        evt2 = NFeHandler.evento_cce_from_path('cce.xml') 
-        
-        nfe_rep = NFeRepository()
+        evt2 = NFeHandler.evento_cce_from_path('cce.xml')         
+
         nfe_rep.store_nfe(xml1)
         nfe_rep.store_evt(evt1)
         nfe_rep.store_evt(evt2)
-       
-        nfe_rep.save('nfe_data.txt')
-        self.assertIsNotNone(nfe_rep.content)
+    
+        with open('nfe_data.txt', 'w') as file:
+            nfe_rep.write_to(file)
+            
+        self.assertIsNotNone(str(nfe_rep))
         
 if __name__ == '__main__':
     unittest.main()

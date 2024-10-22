@@ -14,38 +14,16 @@ from sped.nfe.arquivos import ArquivoDigital
 from sped.nfe.registros import RegistroN100, RegistroN140, RegistroN141, RegistroN170, RegistroZ100
 
 
-class NFeRepository:
+class NFeRepository(ArquivoDigital):
     '''
-    The NFeRepository class is used to store NFe files in text format (repository). 
-    The repository information are organized in blocks defined in the structure of ArquivoDigital class.
-    
-    The common blocks are:
-        block N: information about the NFe and its items
-        block Z: events of nfe like cancellation or CCE
-        
-    The method store_nfe and store_all are used to store xml files in the repository.
-    
-    The method store_evt is used to store events in the repository.
-    
-    The property content is used to access the content of the repository.
+    The NFeRepository is a extended version of the ArquivoDigital class.     
+    The method store_nfe is used to store NFe information (NFeProc) in the repository.    
+    The method store_evt is used to store events information (CCe e CancNFe) in the repository.
+    NFeProc, CCe and CancNFe can be instantiated by the NFeHandler class.
     '''
-        
-    _repository: ArquivoDigital    
-
-    def __init__(self, rep_filename: str = None) -> None:
-        self._repository = ArquivoDigital()
-        if rep_filename:
-            self._repository.readfile(rep_filename)
-        else:
-            self._repository = ArquivoDigital()
-
-    @property
-    def content(self):
-        return self._repository      
-       
+    
     def store_evt(self, evt: Union[CancNFe, CCe]):
         
-        blocoZ = self._repository.blocoZ
         z100 = RegistroZ100()
         z100.CNPJ = self.__format_CNPJ(evt.retEvento.infEvento.CNPJDest)
         z100.CPF = self.__format_CPF(evt.retEvento.infEvento.CPFDest)
@@ -55,11 +33,11 @@ class NFeRepository:
         z100.MOTIVO = evt.retEvento.infEvento.xMotivo
         z100.PROTOCOLO = evt.retEvento.infEvento.nProt
         z100.DESC_EVENTO = evt.retEvento.infEvento.xEvento
-        blocoZ.add(z100)            
+        self.blocoZ.add(z100)            
 
+    
     def store_nfe(self, nfeProc: NfeProc):  # sourcery skip: extract-method
 
-        blocoN = self._repository.blocoN
         # processa cabeçalho da nota fiscal
         n100 = RegistroN100()
         n100.CNPJ_EMIT = nfeProc.NFe.infNFe.emit.CNPJ
@@ -77,7 +55,7 @@ class NFeRepository:
         n100.VALOR_NFE = nfeProc.NFe.infNFe.total.ICMSTot.vNF
         n100.DATA_IMPORTACAO = date.today()
         n100.STATUS_NFE = "AUTORIZADA"
-        blocoN.add(n100)
+        self.blocoN.add(n100)
 
         # processa fatura/duplicatas
         if nfeProc.NFe.infNFe.cobr:
@@ -87,14 +65,14 @@ class NFeRepository:
                 n140.VLR_ORIG = self.__checkFloat(fat.vOrig)
                 n140.VLR_DESC = self.__checkFloat(fat.vDesc)
                 n140.VLR_LIQ = self.__checkFloat(fat.vLiq)
-                blocoN.add(n140)
+                self.blocoN.add(n140)
 
             for dup in nfeProc.NFe.infNFe.cobr.dup:
                 n141 = RegistroN141()
                 n141.NUM_DUP = dup.nDup
                 n141.DT_VENC = self.__checkDate(dup.dVenc)
                 n141.VLR_DUP = self.__checkFloat(dup.vDup)
-                blocoN.add(n141)
+                self.blocoN.add(n141)
 
         # processa itens da nfe   
         for i, item in enumerate(nfeProc.NFe.infNFe.det, start=1):
@@ -134,9 +112,10 @@ class NFeRepository:
             n170.CST_IPI = ipi_data[0] 
             n170.VLR_IPI = ipi_data[1]
 
-            blocoN.add(n170)
+            self.blocoN.add(n170)
 
-    def __extract_icms_data(self, ICMS):
+
+    def __extract_icms_data(self,ICMS):
         
         def fill_list(list, size, fill_value):    
             fill_size = size - len(list)
@@ -168,6 +147,7 @@ class NFeRepository:
 
         return [None, None, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
+    
     def __extract_ipi_data(self, IPI):
         if IPI:
             if IPI.IPITrib:
@@ -176,10 +156,6 @@ class NFeRepository:
             elif IPI.IPINT:
                 return [IPI.IPINT.CST.value, 0.0]
         return [None, 0.0]
-
-    def save(self, filename: str):
-        with open(filename, 'w', encoding='utf-8') as file:
-            self._repository.write_to(file)
 
     @staticmethod
     def __format_CNPJ(cnpj):

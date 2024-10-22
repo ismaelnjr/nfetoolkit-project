@@ -20,12 +20,10 @@ Casos de uso:
 
     1) Ler uma nfe a partir do xml e gerar o pdf correspondente:
         
-    from nfetoolkit import nfetk
+    from nfetoolkit import NFeHandler
 
-
-    nfetoolkit = nfetk.XMLHandler()             
-    nfeProc = nfetoolkit.nfe_from_path('nfe.xml')
-    nfetoolkit.nfe_to_pdf(nfeProc, 'nfe.pdf')
+    nfeProc = NFeHandler.nfe_from_path('nfe.xml')
+    NFeHandler.nfe_to_pdf(nfeProc, 'nfe.pdf')
 
     2) Extrair os xmls contidos em um arquivo Zip na pasta do diretório corrente e organizar em subpastas padrão: nfe, canc, inut e cce
 
