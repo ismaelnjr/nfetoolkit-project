@@ -1,3 +1,6 @@
-__version__ = '0.1.1'
+__version__ = '0.2.0'
 
-from .nfetkt import NFeTkt as nfetk
+from .nfe_fix import NFeFix
+from .nfe_handler import XMLHandler
+from .nfe_organizer import XMLOrganizer
+from .nfe_repository import NFeRepository

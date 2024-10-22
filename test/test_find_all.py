@@ -8,14 +8,14 @@ os.chdir(test_root)
 sys.path.insert(0, os.path.dirname(test_root))
 sys.path.insert(0, test_root)
 
-from nfetoolkit import nfetk
+from nfetoolkit import XMLOrganizer
 
 class TestNFeToolkit(unittest.TestCase):
 
     def test_organize_xmls(self):
 
-        test = nfetk.XMLOrganizer()
-        xml_list = test.find_all(os.getcwd())
+        nfe_organizer = XMLOrganizer()
+        xml_list = nfe_organizer.find_all(os.getcwd())
         
         self.assertEqual(xml_list[0].name, 'canc.xml')
 

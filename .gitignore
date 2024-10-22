@@ -3,3 +3,4 @@
 /nfetoolkit-project.code-workspace
 /spednfe/__pycache__/*
 dist
+build

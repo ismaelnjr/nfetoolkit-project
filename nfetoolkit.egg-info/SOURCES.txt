@@ -8,8 +8,8 @@ nfetoolkit.egg-info/SOURCES.txt
 nfetoolkit.egg-info/dependency_links.txt
 nfetoolkit.egg-info/requires.txt
 nfetoolkit.egg-info/top_level.txt
-test/__init__.py
 test/test_danfe_nfe.py
+test/test_find_all.py
 test/test_fix_nfe.py
 test/test_nfe_rep.py
 test/test_organize_xmls.py

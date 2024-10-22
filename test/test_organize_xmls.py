@@ -8,7 +8,7 @@ os.chdir(test_root)
 sys.path.insert(0, os.path.dirname(test_root))
 sys.path.insert(0, test_root)
 
-from nfetoolkit import nfetk
+from nfetoolkit import XMLOrganizer
 
 class TestNFeToolkit(unittest.TestCase):
 
@@ -19,8 +19,8 @@ class TestNFeToolkit(unittest.TestCase):
 
         dest_dir_fd = f'{os.getcwd()}\\output'
 
-        test = nfetk.XMLOrganizer()
-        test.extract_xmls(zip_path, dest_dir_fd)      
+        nfe_organizer = XMLOrganizer()
+        nfe_organizer.extract_xmls(zip_path, dest_dir_fd)      
 
 if __name__ == '__main__':
     unittest.main()
