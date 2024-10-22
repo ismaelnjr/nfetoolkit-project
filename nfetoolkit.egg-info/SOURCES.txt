@@ -2,7 +2,10 @@ LICENSE
 README.md
 setup.py
 nfetoolkit/__init__.py
-nfetoolkit/nfetkt.py
+nfetoolkit/nfe_fix.py
+nfetoolkit/nfe_handler.py
+nfetoolkit/nfe_organizer.py
+nfetoolkit/nfe_repository.py
 nfetoolkit.egg-info/PKG-INFO
 nfetoolkit.egg-info/SOURCES.txt
 nfetoolkit.egg-info/dependency_links.txt

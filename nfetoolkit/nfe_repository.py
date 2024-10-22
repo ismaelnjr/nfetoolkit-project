@@ -1,7 +1,6 @@
 import os
 import xml.etree.ElementTree as ET
 import os
-import tqdm
 
 from datetime import date
 
@@ -43,23 +42,7 @@ class NFeRepository:
     @property
     def content(self):
         return self._repository      
-
-    def store_all(self, source_dir: str, verbose=False):
-        
-        xml_list = self.__list_xml(source_dir)
-        for xml_file in tqdm.tqdm(xml_list, total=len(xml_list), desc="processing xmls", disable=not verbose):            
-            xml_type = NFeHandler.xml_type(xml_file)
-            
-            if xml_type == 'nfe_type':
-                obj = NFeHandler.nfe_from_path(xml_file)
-                self.store_nfe(obj)
-            elif xml_type == 'canc_type':
-                obj = NFeHandler.evento_canc_from_path(xml_file)
-                self.store_evt(obj)
-            elif xml_type == 'cce_type':      
-                obj = NFeHandler.evento_cce_from_path(xml_file)
-                self.store_evt(obj)         
-                
+       
     def store_evt(self, evt: Union[CancNFe, CCe]):
         
         blocoZ = self._repository.blocoZ
@@ -230,10 +213,3 @@ class NFeRepository:
     @staticmethod
     def __checkDate(date_str):
         return f'{date_str[8:10]}{date_str[5:7]}{date_str[:4]}'      
-
-    def __list_xml(self, src_dir_fd: str):
-        return [
-            os.path.join(src_dir_fd, f)
-            for f in os.listdir(src_dir_fd)
-            if f.lower().endswith('.xml') 
-        ]
