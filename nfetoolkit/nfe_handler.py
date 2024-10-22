@@ -16,7 +16,7 @@ from lxml import etree
 from typing import Optional, List, Any
 
 
-class XMLHandler:
+class NFeHandler:
     '''
     The XMLHandler class provides static methods to serialize and validate XML of Nota Fiscal Eletrônica (NFe) documents.
     Also can be used to parse XML documents and generate in pdf format.  
@@ -26,35 +26,35 @@ class XMLHandler:
     
     @staticmethod
     def nfe_from_path( path) -> NfeProc:
-        return XMLHandler._parser.parse(path, NfeProc)
+        return NFeHandler._parser.parse(path, NfeProc)
     
     @staticmethod
     def evento_canc_from_path(path) -> CancNFe:
-        return XMLHandler._parser.parse(path, CancNFe)
+        return NFeHandler._parser.parse(path, CancNFe)
     
     @staticmethod
     def evento_cce_from_path(path) -> CCe:
-        return XMLHandler._parser.parse(path, CCe)
+        return NFeHandler._parser.parse(path, CCe)
     
     @staticmethod
     def nfe_to_xml(nfeproc: NfeProc) -> str:
-        return XMLHandler.to_xml(nfeproc)
+        return NFeHandler.to_xml(nfeproc)
     
     @staticmethod
     def evento_canc_to_xml(nfecanc: CancNFe) -> str:
-        return  XMLHandler.to_xml(nfecanc)
+        return  NFeHandler.to_xml(nfecanc)
     
     @staticmethod   
     def evento_cce_to_xml(cce: CCe) -> str:
-        return XMLHandler.to_xml(cce)
+        return NFeHandler.to_xml(cce)
     
     @staticmethod
     def from_path(path) -> Any:
         with contextlib.suppress(Exception):
             for method in [
-                XMLHandler.nfe_from_path, 
-                XMLHandler.evento_canc_from_path, 
-                XMLHandler.evento_cce_from_path
+                NFeHandler.nfe_from_path, 
+                NFeHandler.evento_canc_from_path, 
+                NFeHandler.evento_cce_from_path
             ]:
                 if xml_instance := method(path):
                     return xml_instance
@@ -102,7 +102,7 @@ class XMLHandler:
                 ns_map = {None: f"http://www.portalfiscal.inf.br/{package}"}
         xml = serializer.render(obj=clazz, ns_map=ns_map)
         if pkcs12_data:
-            return XMLHandler.sign_xml(xml, pkcs12_data, pkcs12_password, doc_id=doc_id)
+            return NFeHandler.sign_xml(xml, pkcs12_data, pkcs12_password, doc_id=doc_id)
         return xml
 
     @classmethod
@@ -138,7 +138,7 @@ class XMLHandler:
         validation_messages = []
         doc_etree = etree.fromstring(xml.encode("utf-8"))
         if schema_path is None:
-            schema_path = XMLHandler._get_schema_path(obj_xml)
+            schema_path = NFeHandler._get_schema_path(obj_xml)
         xmlschema_doc = etree.parse(schema_path)
         parser = etree.XMLSchema(xmlschema_doc)
 
@@ -179,8 +179,8 @@ class XMLHandler:
     @staticmethod
     def validate_xml(obj_xml: Any, schema_path: Optional[str] = None) -> List:
         """Serialize binding as xml, validate it and return possible errors."""
-        xml = XMLHandler.to_xml(obj_xml)
-        return XMLHandler._schema_validation(obj_xml, xml, schema_path) 
+        xml = NFeHandler.to_xml(obj_xml)
+        return NFeHandler._schema_validation(obj_xml, xml, schema_path) 
     
     @staticmethod
     def nfe_to_pdf(nfeProc: NfeProc, pdf_filename: str):

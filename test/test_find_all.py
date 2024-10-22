@@ -8,13 +8,13 @@ os.chdir(test_root)
 sys.path.insert(0, os.path.dirname(test_root))
 sys.path.insert(0, test_root)
 
-from nfetoolkit import XMLOrganizer
+from nfetoolkit import NFeOrganizer
 
 class TestNFeToolkit(unittest.TestCase):
 
     def test_organize_xmls(self):
 
-        nfe_organizer = XMLOrganizer()
+        nfe_organizer = NFeOrganizer()
         xml_list = nfe_organizer.find_all(os.getcwd())
         
         self.assertEqual(xml_list[0].name, 'canc.xml')

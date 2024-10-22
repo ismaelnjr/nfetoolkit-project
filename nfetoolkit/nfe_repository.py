@@ -9,8 +9,8 @@ from nfelib.nfe.bindings.v4_0.proc_nfe_v4_00 import NfeProc
 from nfelib.nfe_evento_cancel.bindings.v1_0 import ProcEventoNfe as CancNFe
 from nfelib.nfe_evento_cce.bindings.v1_0.proc_cce_nfe_v1_00 import ProcEventoNfe as CCe
 from typing import List, Any, Union
-from .nfe_organizer import XMLOrganizer
-from .nfe_handler import XMLHandler
+from .nfe_organizer import NFeOrganizer
+from .nfe_handler import NFeHandler
 from sped.nfe.arquivos import ArquivoDigital
 from sped.nfe.registros import RegistroN100, RegistroN140, RegistroN141, RegistroN170, RegistroZ100
 
@@ -48,16 +48,16 @@ class NFeRepository:
         
         xml_list = self.__list_xml(source_dir)
         for xml_file in tqdm.tqdm(xml_list, total=len(xml_list), desc="processing xmls", disable=not verbose):            
-            xml_type = XMLHandler.xml_type(xml_file)
+            xml_type = NFeHandler.xml_type(xml_file)
             
             if xml_type == 'nfe_type':
-                obj = XMLHandler.nfe_from_path(xml_file)
+                obj = NFeHandler.nfe_from_path(xml_file)
                 self.store_nfe(obj)
             elif xml_type == 'canc_type':
-                obj = XMLHandler.evento_canc_from_path(xml_file)
+                obj = NFeHandler.evento_canc_from_path(xml_file)
                 self.store_evt(obj)
             elif xml_type == 'cce_type':      
-                obj = XMLHandler.evento_cce_from_path(xml_file)
+                obj = NFeHandler.evento_cce_from_path(xml_file)
                 self.store_evt(obj)         
                 
     def store_evt(self, evt: Union[CancNFe, CCe]):

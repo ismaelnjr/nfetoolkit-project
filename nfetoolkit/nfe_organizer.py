@@ -5,9 +5,9 @@ import shutil
 import os
 
 from pathlib import Path
-from .nfe_handler import XMLHandler
+from .nfe_handler import NFeHandler
 
-class XMLOrganizer:
+class NFeOrganizer:
 
     def organize_xmls(self, source_dir_fd: str, dest_dir_fd: str, folders_map=None):
         """oraniza os arquivos xml contidos em uma pasta e os move para subpastas de 
@@ -19,7 +19,7 @@ class XMLOrganizer:
                 'cce_type': 'cce',
                 'inut_type': 'inut',
             }
-        XMLOrganizer.create_dest_folders(path=dest_dir_fd, dest_fds_map=folders_map)
+        NFeOrganizer.create_dest_folders(path=dest_dir_fd, dest_fds_map=folders_map)
 
         for root, dirs, files in os.walk(source_dir_fd):
             for file in files:
@@ -28,7 +28,7 @@ class XMLOrganizer:
                     self.extract_xmls(file_path, dest_dir_fd)
                 elif file.endswith('.xml'):
                     try:
-                        xml_type = XMLHandler.xml_type(file_path)
+                        xml_type = NFeHandler.xml_type(file_path)
                         if xml_type == 'unknown_type':
                             print(f"Arquivo {file} não é um arquivo xml conhecido")
                         else:
@@ -57,7 +57,7 @@ class XMLOrganizer:
         nfe_list = []
         xml_types = ['nfe_type', 'canc_type', 'cce_type', 'inut_type']
         for file_path in Path(from_path).rglob('*.xml'):
-            xml_type = XMLHandler.xml_type(file_path)
+            xml_type = NFeHandler.xml_type(file_path)
             if xml_type in xml_types:
                 nfe_list.append(file_path) 
         return nfe_list

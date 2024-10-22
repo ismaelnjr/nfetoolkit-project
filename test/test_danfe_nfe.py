@@ -8,14 +8,14 @@ os.chdir(test_root)
 sys.path.insert(0, os.path.dirname(test_root))
 sys.path.insert(0, test_root)
 
-from nfetoolkit import XMLHandler
+from nfetoolkit import NFeHandler
 
 class TestReadNFe(unittest.TestCase):
            
     def test_danfe_nfe(self):        
         
-        nfeProc = XMLHandler.nfe_from_path('nfe.xml')
-        XMLHandler.nfe_to_pdf(nfeProc, 'nfe.pdf')
+        nfeProc = NFeHandler.nfe_from_path('nfe.xml')
+        NFeHandler.nfe_to_pdf(nfeProc, 'nfe.pdf')
 
 if __name__ == '__main__':
     unittest.main()
