@@ -1,46 +1,148 @@
-# NFE Toolkit
+# nfetoolkit
 
-Biblioteca para manipulação de arquivos nfe (Nota Fiscal Eletrônica)
+Ferramenta de linha de comando para organizar, corrigir, ler e exportar arquivos XML de Nota Fiscal Eletrônica (NF-e).
 
-## Requisitos
+---
 
-- python
-- nfelib
-- spedpy
+## 📦 Instalação de dependências
 
-## Como instalar
+Certifique-se de ter o Python 3.9+ instalado.
 
-    $ pip install nfetoolkit
+Instale as dependências com:
 
-## Objetivos do Projeto
+```bash
+pip install -r requirements.txt
+```
 
-A ideia é criar um toolkit para leitura/criação/organização de xmls relacionados ao projeto da Nota Fiscal Eletrônica
+---
 
-Casos de uso:
+## ▶️ Como usar
 
-    1) Ler uma nfe a partir do xml e gerar o pdf correspondente:
-        
-    from nfetoolkit import NFeHandler
+Execute a ferramenta com o comando:
 
-    nfeProc = NFeHandler.nfe_from_path('nfe.xml')
-    NFeHandler.nfe_to_pdf(nfeProc, 'nfe.pdf')
+```bash
+python manage.py <comando> [opções]
+```
 
-    2) Extrair os xmls contidos em um arquivo Zip na pasta do diretório corrente e organizar em subpastas padrão: nfe, canc, inut e cce
+---
 
-    from nfetoolkit import nfetk
+## 🔁 Comandos disponíveis
 
+### 🗂️ `organize`
 
-    zip_path = 'notas.zip'
-    dest_dir_fd = os.getcwd()
+Organiza os arquivos XML em subpastas por tipo: `nfe`, `canc`, `cce`, `inut`.
 
-    test = nfetk.XMLOrganizer()
-    test.extract_xmls(zip_path, dest_dir_fd)   
+```bash
+python manage.py organize <source_dir> <dest_dir> [--no-verbose]
+```
 
-    3) Gravar conjunto de dados de notas fiscais em um único arquivo texto, separado por pipes (ArquivoDigital) 
+**Exemplo:**
 
-    from nfetoolkit import nfetk
+```bash
+python manage.py organize C:\xmls_originais C:\xmls_organizados
+```
 
+---
 
-    nfeToolkit = nfetk.NFeRepository()
-    nfeToolkit.store_all('C:\\temp\\dest\\nfe', verbose=True)
-    nfeToolkit.save('nfe_data.txt')
+### 📤 `export`
+
+Exporta os dados estruturados dos XMLs encontrados para um arquivo `.txt`.
+
+```bash
+python manage.py export <xml_dir> [--output <arquivo_saida>] [--no-verbose]
+```
+
+**Exemplo:**
+
+```bash
+python manage.py export C:\xmls_organizados --output export.txt
+```
+
+Se não especificar `--output`, será gerado `./nfe_data.txt` no diretório atual.
+
+---
+
+### 🛠️ `fix`
+
+Aplica correções definidas em um arquivo `config.json` a todos os XMLs de um diretório.
+
+```bash
+python manage.py fix <input_dir> <config.json> [--output_dir <destino>] [--no-verbose]
+```
+
+**Exemplo:**
+
+```bash
+python manage.py fix C:\xmls_organizados config.json --output_dir C:\xmls_corrigidos
+```
+
+Se `--output_dir` não for informado, os arquivos corrigidos serão salvos no mesmo diretório de origem.
+
+---
+
+### 📄 `read`
+
+Gera o DANFE (arquivo PDF) de uma NF-e.
+
+```bash
+python manage.py read <xml_file> [--output <arquivo_pdf>]
+```
+
+**Exemplo:**
+
+```bash
+python manage.py read nfe.xml --output nota.pdf
+```
+
+---
+
+## 🔧 Exemplo de `config.json` para o comando `fix`
+
+```json
+{
+  "rules": [
+    {
+      "namespace": {
+        "ns": "http://www.portalfiscal.inf.br/nfe"
+      },
+      "path": ".//ns:det",
+      "tag": ".//ns:imposto/ns:ICMS/ns:ICMS00/ns:orig",
+      "condition": {
+        ".//ns:prod/ns:NCM": "85142011",
+        ".//ns:imposto/ns:ICMS/ns:ICMS00/ns:orig": "0"
+      },
+      "new_value": "2"
+    }
+  ]
+}
+```
+
+---
+
+## 📌 Observações
+
+- O padrão é exibir barra de progresso (`verbose=True`). Use `--no-verbose` se quiser ocultar.
+- A estrutura esperada dos XMLs segue o padrão da SEFAZ.
+- Os dados exportados seguem o layout dos blocos SPED (`RegistroN100`, `N170`, `Z100`, etc.).
+
+---
+
+## 📁 Estrutura recomendada do projeto
+
+```
+nfetoolkit/
+├── core/
+│   ├── handler.py
+│   ├── fix.py
+│   ├── organizer.py
+│   ├── repository.py
+├── manage.py
+├── config.json
+├── requirements.txt
+```
+
+---
+
+## 🔗 Licença
+
+Este projeto é distribuído sob a licença MIT.

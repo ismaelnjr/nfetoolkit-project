@@ -1,28 +1,30 @@
 # -*- coding: utf-8 -*-
-
 from setuptools import setup, find_packages
+from core import __version__
 
 
-from setuptools import setup
-from setuptools import find_packages
-
-from nfetoolkit import __version__
-    
 def parse_requirements(filename):
-    with open(filename, encoding='utf-16') as f:
-        return f.read().splitlines()
+    with open(filename, encoding='utf-8') as f:
+        return [line.strip() for line in f if line.strip() and not line.startswith('#')]
 
-setup(name='nfetoolkit',
+
+try:
+    with open('README.md', encoding='utf-8') as f:
+        long_description = f.read()
+except FileNotFoundError:
+    long_description = 'Toolkit para manipulação de notas fiscais eletrônicas'
+
+setup(
+    name='nfetoolkit',
     version=__version__,
     license='MIT',
     author='Ismael Nascimento',
-    long_description=open('README.md').read(),
-    long_description_content_type="text/markdown",
     author_email='ismaelnjr@icloud.com.br',
-    keywords='sped fiscal nfe receita federal',
-    description=u'Toolkit para manipulação de notas fiscais eletrônicas',
+    description='Toolkit para manipulação de notas fiscais eletrônicas',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     url='https://github.com/ismaelnjr/nfetoolkit-project.git',
-    packages=find_packages(exclude=['test']),
+    packages=find_packages(exclude=['tests', '*.tests', '*.tests.*']),
     include_package_data=True,
     install_requires=parse_requirements('requirements.txt'),
     classifiers=[
@@ -30,7 +32,10 @@ setup(name='nfetoolkit',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.9',
+    entry_points={
+        'console_scripts': [
+            'nfetoolkit=manage:main',
+        ],
+    },
 )
-
-
