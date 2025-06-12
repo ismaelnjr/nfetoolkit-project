@@ -8,7 +8,7 @@ os.chdir(test_root)
 sys.path.insert(0, os.path.dirname(test_root))
 sys.path.insert(0, test_root)
 
-from core import NFeFix
+from core.fix import NFeFix
 
 class TestFixNFe(unittest.TestCase):
            

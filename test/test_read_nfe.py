@@ -8,7 +8,7 @@ os.chdir(test_root)
 sys.path.insert(0, os.path.dirname(test_root))
 sys.path.insert(0, test_root)
 
-from core import NFeHandler 
+from core.handler import NFeHandler
 
 class TestReadNFe(unittest.TestCase):
            

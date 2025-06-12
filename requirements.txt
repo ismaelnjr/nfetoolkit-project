@@ -1,5 +1,5 @@
-nfelib==2.1.1
-spedpy==1.1.3
-tqdm==4.66.5
-xsdata==24.9
-lxml==5.3.0
+nfelib
+spedpy
+tqdm
+xsdata
+lxml

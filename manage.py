@@ -76,7 +76,7 @@ def cmd_fix(args):
         print(f"[ERRO] Falha ao aplicar correções em lote: {e}")
 
 
-def cmd_read(args):
+def cmd_danfe(args):
     try:
         nfeProc = NFeHandler.nfe_from_path(args.xml)
         NFeHandler.nfe_to_pdf(nfeProc, args.output)
@@ -111,11 +111,11 @@ def main():
     parser_fix.add_argument('--no-verbose', action='store_true', help='Oculta a barra de progresso')
     parser_fix.set_defaults(func=cmd_fix)
 
-    # read (DANFE)
-    parser_read = subparsers.add_parser('read', help='Gera DANFE (PDF) a partir de uma NF-e')
+    # danfe
+    parser_read = subparsers.add_parser('danfe', help='Gera DANFE (PDF) a partir de uma NF-e')
     parser_read.add_argument('xml', help='Caminho do XML da NF-e')
     parser_read.add_argument('--output', default='nfe.pdf', help='Caminho do PDF gerado')
-    parser_read.set_defaults(func=cmd_read)
+    parser_read.set_defaults(func=cmd_danfe)
 
     args = parser.parse_args()
     args.func(args)

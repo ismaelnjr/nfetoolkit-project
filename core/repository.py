@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime
 from typing import Union
 
 from nfelib.nfe.bindings.v4_0.proc_nfe_v4_00 import NfeProc
@@ -37,17 +37,33 @@ class NFeRepository(ArquivoDigital):
         n100.NOME_EMIT = emit.xNome
         n100.NUM_NFE = ide.nNF
         n100.SERIE = ide.serie
-        n100.DT_EMISSAO = self.__format_date(ide.dhEmi)
-        n100.TIPO_NFE = {0: "ENTRADA", 1: "SAIDA"}.get(ide.tpNF, "UNKNOWN")
-        n100.MES_ANO = date.strftime(n100.DT_EMISSAO, '%m_%Y')
+
+        # Data de emissão e MES_ANO
+        try:
+            dt_emissao = datetime.strptime(ide.dhEmi[:10], "%Y-%m-%d").date()
+        except Exception:
+            dt_emissao = None
+
+        n100.DT_EMISSAO = dt_emissao
+        n100.MES_ANO = dt_emissao.strftime('%m_%Y') if dt_emissao else ""
+
+        n100.TIPO_NFE = {'0': "ENTRADA", '1': "SAIDA"}.get(ide.tpNF.value, "UNKNOWN")
         n100.CHAVE_NFE = nfeProc.protNFe.infProt.chNFe
-        n100.CNPJ_DEST = self.__format_CNPJ(getattr(dest, 'CNPJ', ''))
-        n100.CPF_DEST = self.__format_CPF(getattr(dest, 'CPF', ''))
-        n100.NOME_DEST = dest.xNome
-        n100.UF = dest.enderDest.UF.value
-        n100.VALOR_NFE = nfeProc.NFe.infNFe.total.ICMSTot.vNF
-        n100.DATA_IMPORTACAO = date.today()
+
+        # Destinatário
+        n100.CNPJ_DEST = self.__format_CNPJ(getattr(dest, 'CNPJ', '') or '')
+        n100.CPF_DEST = self.__format_CPF(getattr(dest, 'CPF', '') or '')
+        n100.NOME_DEST = getattr(dest, 'xNome', '') or ''
+        
+        uf_raw = getattr(getattr(dest, 'enderDest', None), 'UF', None)
+        n100.UF = uf_raw.value if hasattr(uf_raw, 'value') else uf_raw or ''
+        
+        n100.VALOR_NFE = self.__check_float(nfeProc.NFe.infNFe.total.ICMSTot.vNF)
+
+        # Datas e status    
+        n100.DATA_IMPORTACAO = datetime.today().date()
         n100.STATUS_NFE = "AUTORIZADA"
+
         self.blocoN.add(n100)
 
         self.__processar_fatura(nfeProc)
@@ -96,10 +112,10 @@ class NFeRepository(ArquivoDigital):
 
             icms_data = self.__extract_icms_data(item.imposto.ICMS)
             ipi_data = self.__extract_ipi_data(item.imposto.IPI)
-
+            # ORIGEM, CST_ICMS, BC_ICMS, ALQ_ICMS, VLR_ICMS, ALQ_ICMSST, MVA, BC_ICMSST, ICMSST
             (
                 n170.ORIGEM, n170.CST_ICMS, n170.BC_ICMS, n170.ALQ_ICMS,
-                n170.VLR_ICMS, n170.MVA, n170.BC_ICMSST, n170.ALQ_ICMSST, n170.ICMSST
+                n170.VLR_ICMS, n170.ALQ_ICMSST, n170.MVA, n170.BC_ICMSST, n170.ICMSST
             ) = icms_data
 
             n170.CST_IPI, n170.VLR_IPI = ipi_data
@@ -130,9 +146,10 @@ class NFeRepository(ArquivoDigital):
         for tipo, attrs in icms_map.items():
             icms = getattr(ICMS, tipo, None)
             if icms:
-                values = [getattr(icms, attr.split('.')[-1], 0.0) for attr in attrs]
+                values = [self.__resolve_attr_path(icms, attr, 0.0) for attr in attrs]
+                # ORIGEM, CST_ICMS, BC_ICMS, ALQ_ICMS, VLR_ICMS, ALQ_ICMSST, MVA, BC_ICMSST, ICMSST
                 return fill_list(values, 9)
-        return [None, None, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        return ["0", "00", 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
     def __extract_ipi_data(self, IPI):
         if IPI:
@@ -140,11 +157,11 @@ class NFeRepository(ArquivoDigital):
                 return [IPITrib.CST.value, IPITrib.vIPI]
             elif IPINT := getattr(IPI, 'IPINT', None):
                 return [IPINT.CST.value, 0.0]
-        return [None, 0.0]
+        return ["99", 0.0]
 
     @staticmethod
     def __format_CNPJ(cnpj):
-        if not cnpj:
+        if not cnpj or len(cnpj) != 14 or not cnpj.isdigit():
             return ""
         try:
             return f'{cnpj[:2]}.{cnpj[2:5]}.{cnpj[5:8]}/{cnpj[8:12]}-{cnpj[12:14]}'
@@ -153,7 +170,8 @@ class NFeRepository(ArquivoDigital):
 
     @staticmethod
     def __format_CPF(cpf):
-        if not cpf:
+        cpf = ''.join(filter(str.isdigit, str(cpf)))
+        if len(cpf) != 11:
             return ""
         try:
             return f"{cpf[:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:]}"
@@ -171,3 +189,13 @@ class NFeRepository(ArquivoDigital):
     def __format_date(date_str):
         """Formata datas no padrão ddmmaaaa."""
         return f'{date_str[8:10]}{date_str[5:7]}{date_str[:4]}'
+
+    @staticmethod
+    def __resolve_attr_path(obj, path, default=None):
+        parts = path.split(".")
+        val = obj
+        for part in parts:
+            val = getattr(val, part, None)
+            if val is None:
+                return default
+        return val

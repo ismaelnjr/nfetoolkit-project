@@ -8,7 +8,9 @@ os.chdir(test_root)
 sys.path.insert(0, os.path.dirname(test_root))
 sys.path.insert(0, test_root)
 
-from core import NFeRepository, NFeOrganizer, NFeHandler
+from core.handler import NFeHandler
+from core.repository import NFeRepository
+from core.organizer import NFeOrganizer
 
 class TestNFeRepExport(unittest.TestCase):
            
