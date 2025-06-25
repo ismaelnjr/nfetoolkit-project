@@ -8,9 +8,9 @@ os.chdir(test_root)
 sys.path.insert(0, os.path.dirname(test_root))
 sys.path.insert(0, test_root)
 
-from core.handler import NFeHandler
-from core.repository import NFeRepository
-from core.organizer import NFeOrganizer
+from nfetoolkit.handler import NFeHandler
+from nfetoolkit.repository import NFeRepository
+from nfetoolkit.organizer import NFeOrganizer
 
 class TestNFeRepExport(unittest.TestCase):
            
@@ -18,7 +18,7 @@ class TestNFeRepExport(unittest.TestCase):
         
         nfe_rep = NFeRepository()
         
-        for xml in NFeOrganizer.find_all("C:\\temp\\INTERBRILHO\\xml\\nfe"):
+        for xml in NFeOrganizer.find_all("."):
             
             match (NFeHandler.xml_type(xml)):
                 case 'nfe_type':

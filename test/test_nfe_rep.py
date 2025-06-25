@@ -8,8 +8,8 @@ os.chdir(test_root)
 sys.path.insert(0, os.path.dirname(test_root))
 sys.path.insert(0, test_root)
 
-from core.handler import NFeHandler
-from core.repository import NFeRepository
+from nfetoolkit.handler import NFeHandler
+from nfetoolkit.repository import NFeRepository
 
 class TestNFeRep(unittest.TestCase):
            

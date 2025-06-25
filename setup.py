@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
-from core import __version__
+from nfetoolkit import __version__
 
 
 def parse_requirements(filename):

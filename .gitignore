@@ -4,5 +4,6 @@
 /spednfe/__pycache__/*
 dist
 build
+.vscode
 
 __pycache__

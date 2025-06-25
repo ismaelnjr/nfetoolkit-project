@@ -8,34 +8,16 @@ os.chdir(test_root)
 sys.path.insert(0, os.path.dirname(test_root))
 sys.path.insert(0, test_root)
 
-from core.fix import NFeFix
+from nfetoolkit.fix import NFeFix
 
 class TestFixNFe(unittest.TestCase):
            
     def test_fix_nfe(self):
         
         # Arquivo JSON de configuração
-      config_json = '''
-  {
-    "rules": [
-      {
-        "namespace": { 
-          "ns": "http://www.portalfiscal.inf.br/nfe" 
-        },
-        "path": "./ns:NFe/ns:infNFe/ns:det",
-        "tag": ".ns:imposto/ns:ICMS//ns:orig",
-        "condition": {
-          ".ns:prod/ns:NCM": "85142011",
-          ".ns:imposto/ns:ICMS//ns:orig": "0"
-        },
-        "new_value": "2"
-      }
-    ]
-  }
-  '''
-      config_file = 'config.json'
-      with open(config_file, 'w') as file:
-        file.write(config_json)
+      config_file = 'nfe_fix.json'
+
+      # XML de exemplo
       xml = 'nfe.xml'
       with open(xml, 'r') as file:
         xml_content = file.read()

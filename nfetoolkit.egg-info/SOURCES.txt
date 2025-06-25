@@ -1,11 +1,11 @@
 LICENSE
 README.md
 setup.py
-core/__init__.py
-core/fix.py
-core/handler.py
-core/organizer.py
-core/repository.py
+nfetoolkit/__init__.py
+nfetoolkit/fix.py
+nfetoolkit/handler.py
+nfetoolkit/organizer.py
+nfetoolkit/repository.py
 nfetoolkit.egg-info/PKG-INFO
 nfetoolkit.egg-info/SOURCES.txt
 nfetoolkit.egg-info/dependency_links.txt
