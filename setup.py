@@ -35,7 +35,7 @@ setup(
     python_requires='>=3.9',
     entry_points={
         'console_scripts': [
-            'nfetoolkit=manage:main',
+            'nfetoolkit = nfetoolkit.cli:main',
         ],
     },
 )

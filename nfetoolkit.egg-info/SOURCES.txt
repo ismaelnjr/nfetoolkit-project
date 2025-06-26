@@ -2,6 +2,7 @@ LICENSE
 README.md
 setup.py
 nfetoolkit/__init__.py
+nfetoolkit/cli.py
 nfetoolkit/fix.py
 nfetoolkit/handler.py
 nfetoolkit/organizer.py

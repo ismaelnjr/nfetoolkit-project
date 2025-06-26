@@ -1,2 +1,2 @@
 [console_scripts]
-nfetoolkit = manage:main
+nfetoolkit = nfetoolkit.cli:main
