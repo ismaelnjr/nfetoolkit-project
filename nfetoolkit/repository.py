@@ -92,13 +92,11 @@ class NFeRepository(ArquivoDigital):
     def __processar_itens(self, nfeProc: NfeProc, n100: RegistroN100):
         for i, item in enumerate(nfeProc.NFe.infNFe.det, start=1):
             n170 = RegistroN170()
-            n170.CNPJ_EMIT = n100.CNPJ_EMIT
-            n170.NUM_NFE = n100.NUM_NFE
-            n170.SERIE = n100.SERIE
             n170.NUM_ITEM = i
             n170.COD_PROD = item.prod.cProd
             n170.DESC_PROD = item.prod.xProd
             n170.NCM = item.prod.NCM
+            n170.CEST = item.prod.CEST
             n170.CFOP = item.prod.CFOP
             n170.VLR_UNIT = self.__check_float(item.prod.vUnCom)
             n170.QTDE = self.__check_float(item.prod.qCom)
@@ -112,13 +110,17 @@ class NFeRepository(ArquivoDigital):
 
             icms_data = self.__extract_icms_data(item.imposto.ICMS)
             ipi_data = self.__extract_ipi_data(item.imposto.IPI)
+            pis_data = self.__extract_pis_data(item.imposto.PIS)
+            cofins_data = self.__extract_cofins_data(item.imposto.COFINS)
             # ORIGEM, CST_ICMS, BC_ICMS, ALQ_ICMS, VLR_ICMS, ALQ_ICMSST, MVA, BC_ICMSST, ICMSST
             (
                 n170.ORIGEM, n170.CST_ICMS, n170.BC_ICMS, n170.ALQ_ICMS,
                 n170.VLR_ICMS, n170.ALQ_ICMSST, n170.MVA, n170.BC_ICMSST, n170.ICMSST
             ) = icms_data
 
-            n170.CST_IPI, n170.VLR_IPI = ipi_data
+            (n170.CST_IPI, n170.BC_IPI, n170.ALQ_IPI, n170.VLR_IPI) = ipi_data
+            (n170.CST_PIS, n170.BC_PIS, n170.ALQ_PIS, n170.VLR_PIS) = pis_data
+            (n170.CST_COFINS, n170.BC_COFINS, n170.ALQ_COFINS, n170.VLR_COFINS) = cofins_data
             self.blocoN.add(n170)
 
     def __extract_icms_data(self, ICMS):
@@ -154,10 +156,30 @@ class NFeRepository(ArquivoDigital):
     def __extract_ipi_data(self, IPI):
         if IPI:
             if IPITrib := getattr(IPI, 'IPITrib', None):
-                return [IPITrib.CST.value, IPITrib.vIPI]
+                return [IPITrib.CST.value, IPITrib.vBC, IPITrib.pIPI, IPITrib.vIPI]
             elif IPINT := getattr(IPI, 'IPINT', None):
-                return [IPINT.CST.value, 0.0]
-        return ["99", 0.0]
+                return [IPINT.CST.value, 0.0, 0.0, 0.0]
+        return ["99", 0.0, 0.0, 0.0]
+    
+    def __extract_pis_data(self, PIS):
+        if PIS:
+            if PISAliq := getattr(PIS, 'PISAliq', None):
+                return [PISAliq.CST.value, PISAliq.vBC, PISAliq.pPIS, PISAliq.vPIS]
+            elif PISOutr := getattr(PIS, 'PISOutr', None):
+                return [PISOutr.CST.value, PISOutr.vBC, PISOutr.pPIS, PISOutr.vPIS]
+            elif PISNT := getattr(PIS, 'PISNT', None):
+                return [PISNT.CST.value, 0.0, 0.0, 0.0]
+        return ["99", 0.0, 0.0, 0.0]
+    
+    def __extract_cofins_data(self, COFINS):
+        if COFINS:
+            if COFINSAliq := getattr(COFINS, 'COFINSAliq', None):
+                return [COFINSAliq.CST.value, COFINSAliq.vBC, COFINSAliq.pCOFINS, COFINSAliq.vCOFINS]
+            elif COFINSOutr := getattr(COFINS, 'COFINSOutr', None):
+                return [COFINSOutr.CST.value, COFINSOutr.vBC, COFINSOutr.pCOFINS, COFINSOutr.vCOFINS]
+            elif COFINSNT := getattr(COFINS, 'COFINSNT', None):
+                return [COFINSNT.CST.value, 0.0, 0.0, 0.0]
+        return ["99", 0.0, 0.0, 0.0]
 
     @staticmethod
     def __format_CNPJ(cnpj):
