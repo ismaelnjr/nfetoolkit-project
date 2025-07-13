@@ -11,9 +11,15 @@ def main(xml_dir: str, output_file: str = "nfe_data.txt"):
     xml_list = nfe_organizer.find_all(xml_dir)
 
     for xml_file in tqdm(xml_list, desc="Exportando NF-es", unit="xml"):
-        xml = NFeHandler.nfe_from_path(xml_file)
-        nfe_repository.store_nfe(xml)
-
+        xml_type =  NFeHandler.xml_type(xml_file)
+        
+        if xml_type == 'nfe_type':
+            nfe_repository.store_nfe(NFeHandler.nfe_from_path(xml_file))
+        elif xml_type == 'canc_type':
+            nfe_repository.store_evt(NFeHandler.evento_canc_from_path(xml_file))
+        elif xml_type == 'cce_type':
+            nfe_repository.store_evt(NFeHandler.evento_cce_from_path(xml_file))        
+        
     with open(output_file, "w") as stream:
         nfe_repository.write_to(stream)
 

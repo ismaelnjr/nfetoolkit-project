@@ -21,9 +21,9 @@ class NFeRepository(ArquivoDigital):
         z100.CHAVE_NFE = inf.chNFe
         z100.DATA_EVENTO = self.__format_date(inf.dhRegEvento)
         z100.TIPO_EVENTO = inf.tpEvento
-        z100.MOTIVO = inf.xMotivo
+        z100.MOTIVO = inf.xMotivo.replace("|", "&p") # escape pipes
         z100.PROTOCOLO = inf.nProt
-        z100.DESC_EVENTO = inf.xEvento
+        z100.DESC_EVENTO = inf.xEvento.replace("|", "&p") # escape pipes
         self.blocoZ.add(z100)
 
     def store_nfe(self, nfeProc: NfeProc):
@@ -93,8 +93,8 @@ class NFeRepository(ArquivoDigital):
         for i, item in enumerate(nfeProc.NFe.infNFe.det, start=1):
             n170 = RegistroN170()
             n170.NUM_ITEM = i
-            n170.COD_PROD = item.prod.cProd
-            n170.DESC_PROD = item.prod.xProd
+            n170.COD_PROD = item.prod.cProd.replace("|", "&p") # escape pipes
+            n170.DESC_PROD = item.prod.xProd.replace("|", "&p") # escape pipes
             n170.NCM = item.prod.NCM
             n170.CEST = item.prod.CEST
             n170.CFOP = item.prod.CFOP
