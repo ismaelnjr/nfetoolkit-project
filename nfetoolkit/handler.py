@@ -170,7 +170,15 @@ class NFeHandler:
         elif tag == '{http://www.portalfiscal.inf.br/nfe}procEventoNFe':
             tipo_evt = root.find('.//nfe:tpEvento', ns)
             if tipo_evt is not None:
-                return {'110111': 'canc_type', '110110': 'cce_type'}.get(tipo_evt.text, 'undefined')
+                codigo = tipo_evt.text
+                return {
+                    '110111': 'canc_type',        # Cancelamento
+                    '110110': 'cce_type',         # Carta de Correção
+                    '210200': 'conf_op_type',   # Confirmação da Operação
+                    '210210': 'cienc_op_type',     # Ciência da Operação
+                    '210220': 'desc_op_type',    # Desconhecimento da Operação
+                    '210240': 'op_nr_type',      # Operação Não Realizada
+                }.get(codigo, 'undefined')
         elif tag == '{http://www.portalfiscal.inf.br/nfe}retInutNFe':
             return 'inut_type'
 

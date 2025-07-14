@@ -78,7 +78,16 @@ class NFeOrganizer:
         Returns:
             list[Path]: Lista de arquivos XML encontrados.
         """
-        xml_types = xml_types or ['nfe_type', 'canc_type', 'cce_type', 'inut_type']
+        xml_types = xml_types or [
+            'nfe_type', 
+            'canc_type', 
+            'cce_type', 
+            'inut_type',
+            'conf_op_type',
+            'cienc_op_type',
+            'desc_op_type',
+            'op_nr_type'
+        ]
         files = []
 
         for file_path in Path(from_path).rglob('*.xml'):
